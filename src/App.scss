@@ -1,0 +1,64 @@
+@import 'bootstrap/scss/bootstrap';
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #484848;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #707070;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.App {
+  height: calc(100vh);
+  overflow: hidden;
+
+}
+
+.ToggleRibbon-disabled {
+  width: 100%;
+}
+
+.ToggleRibbon {
+}
+
+.ToggleRibbon-icon {
+  font-weight: lighter;
+  font-size: 1.5em;
+}
+
+.ToggleRibbon-text {
+  margin-left: 0.3em;
+  font-weight: bold;
+}
+
+.PanelView {
+}
+
+.PanelRow-system {
+}
+
+.PanelRow-monitor {
+}
+
+.ModulePanel {
+  padding: 0.5em;
+  border: 2px solid $gray-700;
+  text-align: left;
+  font-size: 10pt;
+  margin-bottom: 0;
+  border-radius: 1em;
+  height: 100%;
+  color: $light
+}
