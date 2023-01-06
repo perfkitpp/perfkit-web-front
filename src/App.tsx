@@ -1,7 +1,7 @@
-import {ReactElement, ReactNode, StrictMode, useEffect, useMemo, useRef, useState} from 'react';
+import { ReactElement, ReactNode, StrictMode, useEffect, useMemo, useRef, useState } from 'react';
 import './App.scss';
-import {Nav, Navbar} from "react-bootstrap";
-import {DockLayout, LayoutBase, LayoutData, PanelData, TabData} from "rc-dock";
+import { Nav, Navbar } from "react-bootstrap";
+import { DockLayout, LayoutBase, LayoutData, PanelData, TabData } from "rc-dock";
 import Terminal from "./comp/Terminal";
 import ConfigPanel from "./comp/ConfigPanel";
 import TracePanel from "./comp/TracePanel";
@@ -23,7 +23,7 @@ export const theme = {
   dark: curStyle.getPropertyValue('--bs-dark'),
 }
 
-const dockLayout = {ref: null as any as DockLayout};
+const dockLayout = { ref: null as any as DockLayout };
 
 export interface WindowInfo {
   onClose?: () => void,
@@ -34,7 +34,7 @@ export interface WindowInfo {
 }
 
 function WrappedContentNode(props: { info: WindowInfo }) {
-  const {info} = props;
+  const { info } = props;
 
   useEffect(() => {
     info.onOpen && info.onOpen();
@@ -52,7 +52,7 @@ export function CreateWindow(key: string, info: WindowInfo) {
     closable: info.closable != undefined ? info.closable : true,
     id: key,
     cached: true,
-    content: <WrappedContentNode info={info}/>
+    content: <WrappedContentNode info={info} />
   };
 
   if (IsWindowOpen(key))
@@ -92,7 +92,7 @@ interface SystemInfo {
 
 const initialWidgetStatus = JSON.parse(
   localStorage.getItem('PerfkitWeb/widgetStatus/2') ?? "{}") as { [key: string]: boolean };
-const savedLayout = {ref: {} as LayoutBase};
+const savedLayout = { ref: {} as LayoutBase };
 
 function App() {
   const dockRef = useRef(null as any as DockLayout);
@@ -127,11 +127,11 @@ function App() {
                 title: 'System',
                 content: <div></div>,
               },
-              {
-                id: 'root/Graphics',
-                title: 'Graphics',
-                content: <div></div>,
-              },
+              // {
+              //   id: 'root/Graphics',
+              //   title: 'Graphics',
+              //   content: <div></div>,
+              // },
             ]
           }
         ]
@@ -205,8 +205,8 @@ function App() {
         dockRef.current.updateTab(wndId, {
           content: <div className='h-100 d-flex justify-content-center align-items-center'>
             <div className='btn text-success ri-links-line px-3 text-center'
-                 style={{fontSize: '2rem'}}
-                 onClick={() => setIsOpen(true)}>
+              style={{ fontSize: '2rem' }}
+              onClick={() => setIsOpen(true)}>
             </div>
           </div>,
           title: props.itemTitle,
@@ -222,37 +222,37 @@ function App() {
     }
 
     return <div className={(isOpen ? 'btn btn-outline-success' : 'btn') + ' mx-1 px-4'}
-                title={props.itemTitle}
-                onClick={OnClick}>
+      title={props.itemTitle}
+      onClick={OnClick}>
       <div className='d-flex flex-row align-items-center gap-1'>
-        <i className={props.iconClass} style={{fontSize: '1.3rem'}}/>
+        <i className={props.iconClass} style={{ fontSize: '1.3rem' }} />
         <div className='fw-bold'
-             style={{maxWidth: isOpen ? '12ch' : '0', overflow: 'hidden', transition: '0.5s'}}>{props.itemTitle}</div>
+          style={{ maxWidth: isOpen ? '12ch' : '0', overflow: 'hidden', transition: '0.5s' }}>{props.itemTitle}</div>
       </div>
     </div>
   }
 
   return (
     <div className='App d-flex flex-column'>
-      <Nav className="px-3" style={{overflowX: 'auto'}}>
+      <Nav className="px-3" style={{ overflowX: 'auto' }}>
         <Navbar>
           <a className='navbar-brand' href='/'>
-            <img src={'logo.png'} alt='perfkit-logo' style={{maxWidth: '2em'}}/>
+            <img src={'logo.png'} alt='perfkit-logo' style={{ maxWidth: '2em' }} />
           </a>
           <NavToggle itemTitle={'Terminal'} iconClass={'ri-terminal-fill'}
-                     widgetFactory={() => <Terminal socketUrl={socketUrlPrefix + '/ws/tty'}/>}/>
+            widgetFactory={() => <Terminal socketUrl={socketUrlPrefix + '/ws/tty'} />} />
           <NavToggle itemTitle={'Configs'} iconClass={'ri-tools-fill'}
-                     widgetFactory={() => <ConfigPanel socketUrl={socketUrlPrefix + '/ws/config'}/>}/>
-          <NavToggle itemTitle={'Traces'} iconClass={'ri-focus-3-line'}
-                     widgetFactory={() => <TracePanel socketUrl={socketUrlPrefix + '/ws/trace'}/>}/>
+            widgetFactory={() => <ConfigPanel socketUrl={socketUrlPrefix + '/ws/config'} />} />
+          {/* <NavToggle itemTitle={'Traces'} iconClass={'ri-focus-3-line'}
+            widgetFactory={() => <TracePanel socketUrl={socketUrlPrefix + '/ws/trace'} />} />
           <NavToggle itemTitle={'Graphics'} iconClass={'ri-palette-line'}
-                     widgetFactory={() => <GraphicPanel socketUrl={socketUrlPrefix + '/ws/graphic'}/>}/>
+            widgetFactory={() => <GraphicPanel socketUrl={socketUrlPrefix + '/ws/graphic'} />} /> */}
           <NavToggle itemTitle={'System'} iconClass={'ri-cpu-line'}
-                     widgetFactory={() => <div>FF</div>}/>
-          <span className='ms-2 me-4' style={{borderRight: '1px dimgray solid', height: '100%'}}/>
+            widgetFactory={() => <div>FF</div>} />
+          <span className='ms-2 me-4' style={{ borderRight: '1px dimgray solid', height: '100%' }} />
           <span className='navbar-brand text-light ms-2'>
-              {sysInfo ? `${sysInfo.alias}@${sysInfo.hostname}` : "Perfkit"}
-            </span>
+            {sysInfo ? `${sysInfo.alias}@${sysInfo.hostname}` : "Perfkit"}
+          </span>
         </Navbar>
       </Nav>
       <div className="flex-fill">

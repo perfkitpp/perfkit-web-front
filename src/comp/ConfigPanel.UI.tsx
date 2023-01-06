@@ -1,10 +1,10 @@
-import {CSSProperties, ReactNode, useContext, useEffect, useMemo, useReducer, useRef, useState} from "react";
-import {CategoryDesc, ConfigPanelControlContext, ElemContext, ElemDesc, RootContext} from "./ConfigPanel";
-import {Col, InputGroup, Row, Spinner} from "react-bootstrap";
+import { CSSProperties, ReactNode, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { CategoryDesc, ConfigPanelControlContext, ElemContext, ElemDesc, RootContext } from "./ConfigPanel";
+import { Col, InputGroup, Row, Spinner } from "react-bootstrap";
 import 'vanilla-jsoneditor/themes/jse-theme-dark.css'
-import {JSONEditor} from "vanilla-jsoneditor";
-import {EmptyFunc, useForceUpdate, useTimeout} from "../Utils";
-import {theme} from "../App";
+import { JSONEditor } from "vanilla-jsoneditor";
+import { EmptyFunc, useForceUpdate, useTimeout } from "../Utils";
+import { theme } from "../App";
 import findValueStyle from "./Style";
 
 export interface CategoryVisualProps {
@@ -27,7 +27,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
     updated: theme.success + '33',
   }
 
-  const {elem, prefix} = prop;
+  const { elem, prefix } = prop;
   const labelRef = useRef(null as any as HTMLDivElement);
   const refreshValueDisplay = useRef(EmptyFunc);
   const refreshFullEditWindow = useRef(EmptyFunc);
@@ -176,7 +176,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
         const tg = evRaw.currentTarget as HTMLInputElement;
         applyValue(tg);
       });
-      inputRef.current?.focus({preventScroll: false});
+      inputRef.current?.focus({ preventScroll: false });
     }, []);
 
     function applyValue(input: HTMLInputElement) {
@@ -193,18 +193,18 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
       case "bigint":
       case "string":
         return <input className="form-control form-control-sm text-end bg-transparent flex-grow-1 py-0"
-                      ref={inputRef}
-                      type={typeof elem.value === "number" ? "number" : "text"}
-                      defaultValue={elem.valueLocal}
-                      onFocus={ev => ev.currentTarget.select()}
-                      onInput={ev => hasInput.current = true}
-                      onKeyDown={ev => ev.key == "Enter" && applyValue(ev.currentTarget)}/>;
+          ref={inputRef}
+          type={typeof elem.value === "number" ? "number" : "text"}
+          defaultValue={elem.valueLocal}
+          onFocus={ev => ev.currentTarget.select()}
+          onInput={ev => hasInput.current = true}
+          onKeyDown={ev => ev.key == "Enter" && applyValue(ev.currentTarget)} />;
 
       default:
         // Value inline editor:
         // https://github.com/josdejong/jsoneditor
         setInlineEditMode(false);
-        return <span/>;
+        return <span />;
     }
   }
 
@@ -222,23 +222,23 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
     const rawText = valueStringify(elem.value);
     return typeof elem.value === "boolean"
       ? (<span className='btn px-3 py-1' tabIndex={0}
-               style={{color: titleColor}}
-               onKeyDown={ev => (ev.key == " " || ev.key == "Enter") && onClick()}>
+        style={{ color: titleColor }}
+        onKeyDown={ev => (ev.key == " " || ev.key == "Enter") && onClick()}>
         {(elem.editted ? elem.valueLocal : elem.value)
-          ? <i className='ri-eye-fill'/>
-          : <i className='ri-eye-close-fill'/>}
-        </span>)
+          ? <i className='ri-eye-fill' />
+          : <i className='ri-eye-close-fill' />}
+      </span>)
       : <span className='text-end overflow-hidden btn flex-grow-0 text-nowrap py-1'
-              tabIndex={0}
-              onFocus={onClick}
-              title={JSON.stringify(elem.value, null, ' ')}
-              style={{color: titleColor, textOverflow: 'ellipsis', maxWidth: '20em'}}>
+        tabIndex={0}
+        onFocus={onClick}
+        title={JSON.stringify(elem.value, null, ' ')}
+        style={{ color: titleColor, textOverflow: 'ellipsis', maxWidth: '20em' }}>
         {elem.editted && <span className='ms-2 small text-light'>
-            ({valueStringify(elem.valueLocal)}) </span>}
+          ({valueStringify(elem.valueLocal)}) </span>}
         {elem.committed && <span className='ms-2 small text-warning fst-italic'>
-            ({valueStringify(elem.valueCommitted)}) </span>}
+          ({valueStringify(elem.valueCommitted)}) </span>}
         {rawText}
-        </span>;
+      </span>;
   }
 
   function HighlightHr(prop: { color: string }) {
@@ -257,7 +257,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
           transition: '.5s',
           opacity: isHovering ? .4 : .0,
           margin: '0'
-        }}/>
+        }} />
     </div>
   }
 
@@ -271,7 +271,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
       }, []);
 
       if (elem.props.oneOf == null)
-        return <div/>;
+        return <div />;
 
       const curSrcLabel = valueStringify(elem.value)
       const curValueLabel = valueStringify(elem.valueLocal);
@@ -306,7 +306,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
 
       useEffect(() => {
         elem.onUpdateReceivedAfterCommit = (value: any) => {
-          editor.current?.set({json: value})
+          editor.current?.set({ json: value })
         }
 
         if (editor.current) {
@@ -320,7 +320,7 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
               text: undefined,
               json: elem.editted ? elem.valueLocal : elem.value
             },
-            onChange: (updatedContent, previousContent, {contentErrors, patchResult}) => {
+            onChange: (updatedContent, previousContent, { contentErrors, patchResult }) => {
               // content is an object { json: JSONData } | { text: string }
               if (patchResult && patchResult.json) {
                 elem.editted = true;
@@ -339,38 +339,38 @@ function ValueLabel(prop: { rootName: string, elem: ElemContext, prefix?: string
           elem.onUpdateReceivedAfterCommit = EmptyFunc;
         }
       }, []);
-      return <div ref={editorContainer} className='w-100 jse-theme-dark'/>
+      return <div ref={editorContainer} className='w-100 jse-theme-dark' />
     }
 
     return <div className='ms-1 ps-1 mb-2 d-flex flex-row align-items-start'>
-      <i className='ri-edit-line me-1 text-primary'/>
-      {elem.props.oneOf != null ? <OneOfEdit/> : <ObjectEdit/>}
+      <i className='ri-edit-line me-1 text-primary' />
+      {elem.props.oneOf != null ? <OneOfEdit /> : <ObjectEdit />}
     </div>
   }
 
   return <div className='h6 px-2 py-0 my-1 border-bottom border-dark border-opacity-10'
-              title={elem.props.description}
-              ref={labelRef}
-              onMouseOver={() => setHoveringState.current(true)}
-              onMouseLeave={() => setHoveringState.current(false)}>
+    title={elem.props.description}
+    ref={labelRef}
+    onMouseOver={() => setHoveringState.current(true)}
+    onMouseLeave={() => setHoveringState.current(false)}>
     <div className={'d-flex align-items-center gap-2 m-0 p-0'}
-         style={{color: titleColor}}
-         onClick={onClick}>
-      <i className={iconClass} style={cssIconStyle}/>
+      style={{ color: titleColor }}
+      onClick={onClick}>
+      <i className={iconClass} style={cssIconStyle} />
       <span className={'btn text-start d-flex flex-row flex-grow-0 py-1'}>
         {prefix && <span className='text-opacity-75 text-light pe-2 flex-grow-0'>{prefix} /</span>}
         {elem.cachedSearchHighlightText ? elem.cachedSearchHighlightText : prop.elem.props.name}
         {elem.editted &&
-            <i className='btn text-danger ri-arrow-go-back-line m-0 ms-2 p-0 px-1'
-               style={{fontSize: '0.9em'}}
-               onClick={ev => performRollback(ev)}/>}
+          <i className='btn text-danger ri-arrow-go-back-line m-0 ms-2 p-0 px-1'
+            style={{ fontSize: '0.9em' }}
+            onClick={ev => performRollback(ev)} />}
       </span>
-      <HighlightHr color={titleColor}/>
+      <HighlightHr color={titleColor} />
       {inlineEditMode
-        ? <InlineEditMode/>
-        : <ValueDisplay refreshValueDisplay={fn => refreshValueDisplay.current = fn}/>}
+        ? <InlineEditMode />
+        : <ValueDisplay refreshValueDisplay={fn => refreshValueDisplay.current = fn} />}
     </div>
-    {fullEditMode && <FullEdit/>}
+    {fullEditMode && <FullEdit />}
   </div>;
 }
 
@@ -386,7 +386,7 @@ function CategoryNode(prop: {
     forceUpdate();
   }
 
-  const {root, self, prefix} = prop;
+  const { root, self, prefix } = prop;
   const forceUpdate = useForceUpdate();
   const collapsed = self.visProps.collapsed;
   const filterMode = self.cachedIsAnyChildHitSearch !== undefined;
@@ -403,22 +403,22 @@ function CategoryNode(prop: {
 
   return <div>
     <h6 className='d-flex flex-row align-items-center text-white py-0'
-        onClick={toggleCollapse}>
-      <i className={folderIconClass + ' px-2 '} style={cssIconStyle}/>
+      onClick={toggleCollapse}>
+      <i className={folderIconClass + ' px-2 '} style={cssIconStyle} />
       {prefix && <span className='text-opacity-75 text-light pe-2 flex-grow-0'>{prefix} /</span>}
       <span className='btn py-1 flex-grow-1 text-start text-light fw-bold my-0'>
         {self.cachedSearchHighlightText ? self.cachedSearchHighlightText : self.name}
       </span>
     </h6>
-    <div className={'ms-3 mt-1 ps-0'} style={{borderLeft: ''}}>
+    <div className={'ms-3 mt-1 ps-0'} style={{ borderLeft: '' }}>
       {isOpen && self.children.map(
         child => typeof child === "number"
           ? (!filterMode || (root.all[child].cachedSearchHighlightText !== undefined || selfFilterHit)
-            ? <ValueLabel key={child} elem={root.all[child]} rootName={root.root.name}/>
-            : <span key={child}/>)
+            ? <ValueLabel key={child} elem={root.all[child]} rootName={root.root.name} />
+            : <span key={child} />)
           : (child.cachedIsAnyChildHitSearch === false && !selfFilterHit
-            ? <span key={child.name}/>
-            : <ForwardedCategoryNode key={child.name} root={prop.root} self={child}/>)
+            ? <span key={child.name} />
+            : <ForwardedCategoryNode key={child.name} root={prop.root} self={child} />)
       )}
     </div>
   </div>;
@@ -429,7 +429,7 @@ function ForwardedCategoryNode(prop: {
   self: CategoryDesc,
   prefix?: string
 }) {
-  const {root, self, prefix} = prop;
+  const { root, self, prefix } = prop;
 
   if (self.children.length === 1) {
     const child = self.children[0];
@@ -437,17 +437,17 @@ function ForwardedCategoryNode(prop: {
 
     return typeof child === "number"
       ? (self.cachedIsAnyChildHitSearch === false && !selfFilterHit
-        ? <span/>
+        ? <span />
         : <ValueLabel
           elem={root.all[child]}
           prefix={(prefix ? prefix + ' / ' : '') + self.name}
-          rootName={root.root.name}/>)
+          rootName={root.root.name} />)
       : <ForwardedCategoryNode
         root={root}
         self={child}
-        prefix={(prefix ? prefix + ' / ' : '') + self.name}/>;
+        prefix={(prefix ? prefix + ' / ' : '') + self.name} />;
   } else {
-    return <CategoryNode root={root} self={self}/>
+    return <CategoryNode root={root} self={self} />
   }
 }
 
@@ -462,6 +462,6 @@ export function RootNode(prop: {
       overflowX: 'hidden',
       fontFamily: 'Lucida Console, monospace',
     }}>
-    <CategoryNode root={prop.ctx} self={prop.ctx.root}/>
+    <CategoryNode root={prop.ctx} self={prop.ctx.root} />
   </div>;
 }

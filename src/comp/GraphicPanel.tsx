@@ -1,8 +1,8 @@
-import {startTransition, useEffect, useMemo, useReducer, useRef, useState} from "react";
-import {useForceUpdate, useWebSocket} from "../Utils";
-import {Spinner} from "react-bootstrap";
-import {CloseWindow, CreateWindow} from "../App";
-import {Simulate} from "react-dom/test-utils";
+import { startTransition, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useForceUpdate, useWebSocket } from "../Utils";
+import { Spinner } from "react-bootstrap";
+import { CloseWindow, CreateWindow } from "../App";
+import { Simulate } from "react-dom/test-utils";
 
 /*
   About control flow ...
@@ -20,7 +20,7 @@ export default function GraphicPanel(prop: { socketUrl: string }) {
         case "new_windows": {
           for (const [key, title] of msg.params) {
             cleanupWnd(key);
-            allWnds.current.set(key, {id: key, title, watching: false, refSocket: socket as WebSocket});
+            allWnds.current.set(key, { id: key, title, watching: false, refSocket: socket as WebSocket });
           }
 
           notifyListDirty();
@@ -59,7 +59,7 @@ export default function GraphicPanel(prop: { socketUrl: string }) {
   }
 
   function GraphicNodeLabel(prop: { context: GraphicContext }) {
-    const {context} = prop;
+    const { context } = prop;
     const forceUpdate = useForceUpdate();
 
     function onClick() {
@@ -86,7 +86,7 @@ export default function GraphicPanel(prop: { socketUrl: string }) {
       if (context.watching) {
         // Send watch start message, spawn window
         CreateWindow(MakeWndKey(context.id), {
-          content: <GraphicWindow context={context}/>,
+          content: <GraphicWindow context={context} />,
           onClose: context.onCloseWindow,
           title: `(gp ${context.id}) ${context.title}`,
           closable: true
@@ -107,7 +107,7 @@ export default function GraphicPanel(prop: { socketUrl: string }) {
     </div>
   }
 
-  const socket = useWebSocket(prop.socketUrl, {onmessage: onRecvMsg}, []);
+  const socket = useWebSocket(prop.socketUrl, { onmessage: onRecvMsg }, []);
   const allWnds = useRef(new Map<number, GraphicContext>);
   const [fenceListRegen, notifyListDirty] = useReducer(s => s + 1, 0);
 
@@ -121,16 +121,16 @@ export default function GraphicPanel(prop: { socketUrl: string }) {
   }, []);
 
   const labels = useMemo(() =>
-      Array.from(allWnds.current)
-        .sort(([, a], [, b]) => a.title < b.title ? -1 : 0)
-        .map(([key, context]) => <GraphicNodeLabel key={key} context={context}/>),
+    Array.from(allWnds.current)
+      .sort(([, a], [, b]) => a.title < b.title ? -1 : 0)
+      .map(([key, context]) => <GraphicNodeLabel key={key} context={context} />),
     [fenceListRegen]);
 
   if (socket?.readyState != WebSocket.OPEN)
     return (<div className='text-center p-3 text-primary'><Spinner animation='border'></Spinner></div>);
 
   return <div className='pt-2'>
-    <div className='mx-1' style={{overflowY: 'auto', fontFamily: 'Lucida Console, monospace'}}>
+    <div className='mx-1' style={{ overflowY: 'auto', fontFamily: 'Lucida Console, monospace' }}>
       {labels}
     </div>
   </div>
@@ -164,7 +164,7 @@ interface MethodDeletedWindow {
 }
 
 function GraphicWindow(prop: { context: GraphicContext }) {
-  const {context} = prop;
+  const { context } = prop;
   const canvasParentDivRef = useRef({} as HTMLDivElement);
   const canvasRef = useRef({} as HTMLCanvasElement);
   const forceUpdate = useForceUpdate();
@@ -173,7 +173,7 @@ function GraphicWindow(prop: { context: GraphicContext }) {
     cachedImage: new Image(),
     isFirstLoad: true,
     backBuffer: {} as HTMLCanvasElement,
-    imgOffst: {x: 0, y: 0},
+    imgOffst: { x: 0, y: 0 },
     zoom: 1,
     fwdMode: false,
   });
@@ -256,8 +256,8 @@ function GraphicWindow(prop: { context: GraphicContext }) {
 
   function fitViewToImage() {
     // Find smaller scale
-    const {width, height} = canvasRef.current;
-    const {naturalWidth, naturalHeight} = stateRef.current.cachedImage;
+    const { width, height } = canvasRef.current;
+    const { naturalWidth, naturalHeight } = stateRef.current.cachedImage;
     const [scaleX, scaleY] = [width / naturalWidth, height / naturalHeight];
     const zoom = stateRef.current.zoom = Math.min(scaleX, scaleY);
     const ofst = stateRef.current.imgOffst;
@@ -271,8 +271,8 @@ function GraphicWindow(prop: { context: GraphicContext }) {
     const img = state.cachedImage;
     const canvas = state.backBuffer;
     const ctx = canvas.getContext('2d');
-    const {x, y} = state.imgOffst;
-    const {zoom} = state;
+    const { x, y } = state.imgOffst;
+    const { zoom } = state;
 
     if (!ctx) return;
 
@@ -294,7 +294,7 @@ function GraphicWindow(prop: { context: GraphicContext }) {
         className={'btn py-0 px-3 ' + (stateRef.current.fwdMode ? 'ri-edit-circle-fill btn-danger ' : 'ri-focus-line ')}
         onClick={toggleFwdMode}
       />
-      <i className='btn py-0 px-2 ri-drag-move-2-fill' onClick={fitViewToImage}/>
+      <i className='btn py-0 px-2 ri-drag-move-2-fill' onClick={fitViewToImage} />
     </div>
     <div className='flex-grow-1' ref={canvasParentDivRef}>
       <canvas

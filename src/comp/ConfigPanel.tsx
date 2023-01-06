@@ -1,9 +1,9 @@
-import {createContext, ReactNode, useEffect, useMemo, useRef, useState} from "react";
-import {EmptyFunc, useForceUpdate, useWebSocket} from "../Utils";
-import {Col, Container, Row, Spinner} from "react-bootstrap";
-import {AppendTextToTerminal} from "./Terminal";
+import { createContext, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { EmptyFunc, useForceUpdate, useWebSocket } from "../Utils";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { AppendTextToTerminal } from "./Terminal";
 import * as View from "./ConfigPanel.UI";
-import {CategoryVisualProps, DefaultVisProp} from "./ConfigPanel.UI";
+import { CategoryVisualProps, DefaultVisProp } from "./ConfigPanel.UI";
 import * as Fuzzysort from "fuzzysort";
 
 export interface ElemDesc {
@@ -222,7 +222,7 @@ export default function ConfigPanel(props: { socketUrl: string }) {
         msg.params.forEach(value => {
           const newRoot = roots[value] = {
             all: {},
-            root: {name: value, children: [], visProps: structuredClone(DefaultVisProp)},
+            root: { name: value, children: [], visProps: structuredClone(DefaultVisProp) },
             elemFuzzyContexts: [],
             categoryFuzzyContexts: [],
           };
@@ -281,18 +281,18 @@ export default function ConfigPanel(props: { socketUrl: string }) {
   }
 
   const allRootFrames = useMemo(() =>
-      <Container fluid className='p-0'>
-        <Row className='m-0 p-0'>
-          {Object.keys(rootTablesRef.current).sort().map(key => rootTablesRef.current[key]).map(
-            table =>
-              table.root.cachedIsAnyChildHitSearch === false
-                ? <span key={table.root.name}/>
-                : <Col key={table.root.name} style={{minWidth: '60ch', maxWidth: '120ch'}} className='m-0 p-0'>
-                  <View.RootNode name={table.root.name} ctx={table}/>
-                </Col>
-          )}
-        </Row>
-      </Container>
+    <Container fluid className='p-0'>
+      <Row className='m-0 p-0'>
+        {Object.keys(rootTablesRef.current).sort().map(key => rootTablesRef.current[key]).map(
+          table =>
+            table.root.cachedIsAnyChildHitSearch === false
+              ? <span key={table.root.name} />
+              : <Col key={table.root.name} style={{ minWidth: '60ch', maxWidth: '120ch' }} className='m-0 p-0'>
+                <View.RootNode name={table.root.name} ctx={table} />
+              </Col>
+        )}
+      </Row>
+    </Container>
     , [cfgSock?.readyState, rootDirtyFlag]);
 
   function setCollapseAll(isCollapsed: boolean) {
@@ -459,25 +459,25 @@ export default function ConfigPanel(props: { socketUrl: string }) {
   // TODO: Implement search using 'https://github.com/farzher/fuzzysort'
   return (
     <ConfigPanelControlContext.Provider value={panelManipContext}>
-      <div style={{display: 'flex', flexDirection: 'column', height: '100%', outline: 'none'}}
-           tabIndex={0}
-           onKeyDown={ev => onKeyDown(ev.nativeEvent)}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', outline: 'none' }}
+        tabIndex={0}
+        onKeyDown={ev => onKeyDown(ev.nativeEvent)}>
         <span className='d-flex mt-2 flex-row-reverse align-items-center'>
           <span className='w-auto d-flex flex-row-reverse flex-grow-1'>
             <button
               className={'btn ri-upload-2-line p-1 px-5 m-0 me-1 flex-grow-1 '
                 + (isAnyItemDirty ? 'btn-primary' : 'btn-outline-primary')}
-              style={{fontSize: iconFontSize}}
+              style={{ fontSize: iconFontSize }}
               title='Commit Changes (Control + Enter)'
               disabled={!isAnyItemDirty}
-              onClick={commitAllChanges}/>
+              onClick={commitAllChanges} />
             <i
               className='btn ri-arrow-go-back-fill p-1 px-2 m-0 me-1 text-danger'
-              style={{fontSize: iconFontSize}}
-              title='Discard Changes' onClick={discardAllChanges} hidden={!isAnyItemDirty}/>
+              style={{ fontSize: iconFontSize }}
+              title='Discard Changes' onClick={discardAllChanges} hidden={!isAnyItemDirty} />
             <i
               className={'btn ri-refresh-line p-1 px-2 m-0 me-1 ' + (!updateImmediate.current ? 'text-primary' : 'btn-primary')}
-              style={{fontSize: iconFontSize}}
+              style={{ fontSize: iconFontSize }}
               title='Apply changes immediately'
               onClick={() => (updateImmediate.current = !updateImmediate.current, forceUpdate())}
             />
@@ -485,21 +485,21 @@ export default function ConfigPanel(props: { socketUrl: string }) {
           <i
             className='btn ri-line-height p-1 px-2 m-0 me-1'
             title='Expand All'
-            style={{fontSize: iconFontSize}}
-            onClick={() => setCollapseAll(false)}/>
+            style={{ fontSize: iconFontSize }}
+            onClick={() => setCollapseAll(false)} />
           <i
             className='btn ri-align-vertically p-1 px-2 m-0 me-1'
             title='Collapse All'
-            style={{fontSize: iconFontSize}}
-            onClick={() => setCollapseAll(true)}/>
+            style={{ fontSize: iconFontSize }}
+            onClick={() => setCollapseAll(true)} />
           <span className='flex-grow-0 ms-2 p-1 w-50 d-flex flex-row align-items-center'>
-            <i className='ri-search-line'/>
+            <i className='ri-search-line' />
             <input type='text' className='form-control p-0 me-2 ms-3'
-                   value={searchText} style={{border: 0}} ref={searchBarRef}
-                   onInput={ev => setSearchText(ev.currentTarget.value)}/>
+              value={searchText} style={{ border: 0 }} ref={searchBarRef}
+              onInput={ev => setSearchText(ev.currentTarget.value)} />
           </span>
         </span>
-        <hr className='my-1 mx-1'/>
+        <hr className='my-1 mx-1' />
         <div style={{
           overflowY: 'scroll',
           width: '100%'

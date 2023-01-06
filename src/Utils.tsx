@@ -1,5 +1,5 @@
-import {useState, useEffect, useRef, DependencyList} from 'react';
-import {AppendTextToTerminal} from "./comp/Terminal";
+import { useState, useEffect, useRef, DependencyList } from 'react';
+import { AppendTextToTerminal } from "./comp/Terminal";
 
 export function useInterval(callback: any, delay: number) {
   const savedCallback = useRef(null as any); // 최근에 들어온 callback을 저장할 ref를 하나 만든다.
